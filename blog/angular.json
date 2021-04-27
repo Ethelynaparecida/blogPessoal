@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "blogPessoal": {
+    "blog": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/blogPessoal",
+            "outputPath": "dist/blog",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -35,7 +35,6 @@
               "./node_modules/jquery/dist/jquery.js",
               "./node_modules/popper.js/dist/umd/popper.min.js",
               "./node_modules/bootstrap/dist/js/bootstrap.js"
-              
             ]
           },
           "configurations": {
@@ -71,18 +70,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "blogPessoal:build"
+            "browserTarget": "blog:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "blogPessoal:build:production"
+              "browserTarget": "blog:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "blogPessoal:build"
+            "browserTarget": "blog:build"
           }
         },
         "test": {
@@ -119,16 +118,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "blogPessoal:serve"
+            "devServerTarget": "blog:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "blogPessoal:serve:production"
+              "devServerTarget": "blog:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "blogPessoal"
+  "defaultProject": "blog"
 }
