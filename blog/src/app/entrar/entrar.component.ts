@@ -29,7 +29,7 @@ userLogin: UserLogin = new UserLogin()
       environment.nome = this.userLogin.nome
       environment.foto = this.userLogin.foto
       environment.id = this.userLogin.id
-      alert('logado')
+      environment.usuario = this.userLogin.usuario
       this.router.navigate(['/inicio'])
     }, erro => {
       if(erro.status == 500){
