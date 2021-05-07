@@ -18,10 +18,7 @@ export class CadastrarComponent implements OnInit {
     private authService: AuthService,
     private router: Router
   ) { }
-  
-
-  lasdksdgfjsgdgf
-  
+    
   ngOnInit() {
     window.scroll(0,0)
   }
@@ -46,14 +43,9 @@ export class CadastrarComponent implements OnInit {
         alert('Usuario cadastrado com sucesso!')
       })
     }
-<<<<<<< Updated upstream
-=======
 
-tetetgjksdfjhsdhfjkdhsh
-nsdfjkdhskdhfks
-
-
->>>>>>> Stashed changes
   }
 
 }
+
+
