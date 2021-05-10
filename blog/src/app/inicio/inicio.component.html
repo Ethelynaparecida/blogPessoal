@@ -11,8 +11,7 @@
             <div class="row d-flex justify-content-center mt-3 mb-5">
                 <div class="col-md-6">
                     <button class="btn btn-light mr-2" type="button" data-toggle="modal"
-                        data-target="#novaPostagem">Nova
-                        Postagem</button>
+                        data-target="#novaPostagem">Nova Postagem</button>
                     <a class="btn btn-outline-light" href="#postagens">Ver Postagens</a>
                 </div>
 
@@ -114,10 +113,22 @@
                         <p class="card-text">{{item.texto}}</p>
                     </div>
                     <div class="card-footer bg-transparent border-success">
-                        <small class="text-muted">{{item.data | date: 'dd/MM/yyyy'}} às {{item.data | date:
-                            'HH:mm'}}
+                        <div>
+                            <small class="text-muted">{{item.data | date: 'dd/MM/yyyy'}} às {{item.data | date:
+                                'HH:mm'}} </small>
+                        </div>
+                        <!--<div>
+                            <button type="button" class="btn btn-outline-danger">Danger</button>
+                            <button  type="button" data-toggle="modal" data-target="#editarPostagem"
+                                class="btn btn-outline-warning">Editarmodal</button>
+                        </div>-->
+                        
 
-                        </small>
+                        <div class="mt-2">
+                            <button  [routerLink]="['/postagem-delet', item.id]" type="button" class="btn mr-3 btn-outline-danger">Excluir</button>
+                            <button [routerLink]="['/postagem-edit', item.id]"  type="button" data-toggle="modal" data-target="#editarPostagem"
+                                class="btn btn-outline-warning">Editar</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -166,6 +177,7 @@
                     </div>
                     <!--/Formulario nova postagem-->
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-success" data-dismiss="modal" (click)='enviar()'
@@ -175,3 +187,54 @@
         </div>
     </div>
     <!-- /Modal para scroll-->
+
+    
+    <!-- Modal editar postagem <div class="modal fade" id="editarPostagem" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="TituloModalCentralizado">Atualizar Postagem</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="titulo">Título</label>
+                        <input [(ngModel)]="postagem.titulo" type="text" class="form-control" id="titulo"
+                            placeholder="Digite o título">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="texto">Texto</label>
+                        <textarea [(ngModel)]="postagem.texto" class="form-control" id="texto" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tema">Escolha seu tema ou <a routerLink='/tema' data-dismiss="modal">cadastre um
+                                novo</a>:
+                        </label>
+                        <select [(ngModel)]='idTema' (change)='getByIdTema()' class="form-control" name="tema"
+                            id="tema">
+                            <option *ngFor='let item of listaTemas' value='{{item.id}}'>
+                                {{item.descricao}}
+                            </option>
+                        </select>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" (click)='atualizarPostagem()'
+                        data-dimiss='modal'>Atualizar</button>
+
+                </div>
+            </div>
+        </div>
+    </div>-->
+    
+    <!-- /Modal editar postagem-->
+    
+</div>

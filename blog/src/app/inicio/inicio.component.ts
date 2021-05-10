@@ -1,14 +1,15 @@
+import { environment } from './../../environments/environment.prod';
 import { AuthService } from './../service/auth.service';
 import { User } from './../model/User';
 import { Tema } from 'src/app/model/Tema';
 
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment.prod';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Postagem } from '../model/Postagem';
 
 import { PostagemService } from '../service/postagem.service';
 import { TemaService } from '../service/tema.service';
+import { UserLogin } from '../model/UserLogin';
 
 
 @Component({
@@ -20,7 +21,8 @@ export class InicioComponent implements OnInit {
 
   postagem: Postagem = new Postagem()
   listaPostagem: Postagem[]
-
+  
+ 
 
   tema: Tema = new Tema()
   listaTemas: Tema[]
@@ -28,16 +30,21 @@ export class InicioComponent implements OnInit {
 
   user: User = new User()
   idUser = environment.id
+
+
  
 
   constructor(
     private router : Router,
+    private route: ActivatedRoute,
     private postagemService: PostagemService,
     private temaService: TemaService,
     private auth: AuthService
   ) { }
 
   ngOnInit() {
+  window.scrollTo(0,0)
+
     if(environment.token == ""){
       //alert('Sua seção expirou, faça o login novamente!')
       this.router.navigate(['/entrar'])
@@ -46,7 +53,6 @@ export class InicioComponent implements OnInit {
     this.getAllTemas()
     this.getAllPostagem()
     this.getByIdUser()
-   
   }
 
   enviar(){
@@ -65,6 +71,10 @@ export class InicioComponent implements OnInit {
 
   }
 
+  atualizarPostagem(){
+
+  }
+
   getAllTemas(){
 
     this.temaService.getAllTema().subscribe((resp: Tema[]) => {
@@ -73,8 +83,8 @@ export class InicioComponent implements OnInit {
 
   }
 
-
   getByIdTema(){
+
     this.temaService.getByIdTema(this.idTema).subscribe((resp :Tema) =>{
       this.tema = resp
     })
@@ -87,11 +97,14 @@ export class InicioComponent implements OnInit {
     })
   }
 
+
+
   getByIdUser(){
     this.auth.getByIdUser(this.idUser).subscribe((resp: User) =>{
       this.user = resp
 
     })
   }
+
 
 }
