@@ -1,3 +1,4 @@
+import { AlertasService } from './../service/alertas.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment.prod';
@@ -16,7 +17,8 @@ export class TemaComponent implements OnInit {
 
   constructor(
     private router : Router,
-    private temaService: TemaService
+    private temaService: TemaService,
+    private alertas: AlertasService
   ) { }
 
   ngOnInit() {
@@ -24,6 +26,11 @@ export class TemaComponent implements OnInit {
       this.router.navigate(['/entrar'])
     }
     this.findAllTemas()
+
+    if(environment.tipo != 'adm'){
+      this.alertas.showAlertInfo('Voce não tem acesso a essa pagina')
+      this.router.navigate(['/inicio'])
+    }
   }
   findAllTemas(){
     this.temaService.getAllTema().subscribe((resp: Tema[])=>{

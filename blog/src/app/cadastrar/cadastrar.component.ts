@@ -46,6 +46,10 @@ export class CadastrarComponent implements OnInit {
 
   }
 
+  onSubmitTemplateBased(value: any) {
+    console.log(value);
+}
+
 }
 
 

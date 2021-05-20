@@ -1,16 +1,14 @@
-import { environment } from './../../environments/environment.prod';
+
 import { AuthService } from './../service/auth.service';
 import { User } from './../model/User';
-import { Tema } from 'src/app/model/Tema';
-
+import { Tema } from './../model/Tema';
+import { TemaService } from './../service/tema.service';
+import { Postagem } from './../model/Postagem';
+import { PostagemService } from './../service/postagem.service';
+import { AlertasService } from './../service/alertas.service';
+import { environment } from './../../environments/environment.prod';
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Postagem } from '../model/Postagem';
-
-import { PostagemService } from '../service/postagem.service';
-import { TemaService } from '../service/tema.service';
-import { UserLogin } from '../model/UserLogin';
-
 
 @Component({
   selector: 'app-inicio',
@@ -20,91 +18,113 @@ import { UserLogin } from '../model/UserLogin';
 export class InicioComponent implements OnInit {
 
   postagem: Postagem = new Postagem()
-  listaPostagem: Postagem[]
-  
- 
+  listaPostagens: Postagem[]
+  tituloPost: string
 
   tema: Tema = new Tema()
   listaTemas: Tema[]
   idTema: number
+  nomeTema: string = ''
+
 
   user: User = new User()
-  idUser = environment.id
 
+  idUserLogado = environment.idUser
+  fotoUserLogado = environment.foto
+  nomeUserLogado = environment.nome
 
- 
+  key = 'data'
+  reverse = true
 
   constructor(
-    private router : Router,
-    private route: ActivatedRoute,
+    private router: Router,
+    private alertas: AlertasService,
     private postagemService: PostagemService,
     private temaService: TemaService,
-    private auth: AuthService
+    private authService: AuthService,
+
   ) { }
 
   ngOnInit() {
-  window.scrollTo(0,0)
+    window.scroll(0, 0)
 
-    if(environment.token == ""){
-      //alert('Sua seção expirou, faça o login novamente!')
+    if (environment.token == '') {
+      this.alertas.showAlertInfo('Seu token expirou, faça o login novamente.')
       this.router.navigate(['/entrar'])
     }
 
-    this.getAllTemas()
-    this.getAllPostagem()
-    this.getByIdUser()
+    this.findAllPostagens()
+    this.findAllTemas()
+    this.findByIdUser()
+
   }
 
-  enviar(){
-    this.tema.id = this.idTema
-    this.postagem.tema = this.tema
-    
-    this.user.id = this.idUser
-    this.postagem.usuario = this.user
-
-    this.postagemService.postPostagem(this.postagem).subscribe((resp: Postagem) => {
-    this.postagem = resp
-    alert('Postagem realizado com sucesso!')
-    this.postagem = new Postagem()
-    this.getAllPostagem()
+  findAllPostagens() {
+    this.postagemService.getAllPostagens().subscribe((resp: Postagem[]) => {
+      this.listaPostagens = resp
+      console.log(this.listaPostagens)
+    }, err => {
+      console.log(this.listaPostagens)
     })
-
   }
 
-  atualizarPostagem(){
-
+  findByIdUser() {
+    this.authService.getByIdUser(environment.idUser).subscribe((resp: User) => {
+      this.user = resp
+    })
   }
 
-  getAllTemas(){
-
+  findAllTemas() {
     this.temaService.getAllTema().subscribe((resp: Tema[]) => {
       this.listaTemas = resp
     })
-
   }
 
-  getByIdTema(){
-
-    this.temaService.getByIdTema(this.idTema).subscribe((resp :Tema) =>{
+  findByIdTema() {
+    this.temaService.getByIdTema(this.idTema).subscribe((resp: Tema) => {
       this.tema = resp
     })
+  }
+
+  findByNomeTema() {
+    console.log(this.nomeTema)
+    if (this.nomeTema == '') {
+      this.findAllTemas()
+    } else {
+      this.temaService.getByNomeTema(this.nomeTema).subscribe((resp: Tema[]) => {
+        this.listaTemas = resp
+      })
+    }
+  }
+
+  findByTituloPostagem(){
+    if(this.tituloPost == ''){
+      this.findAllPostagens()
+    } else {
+      this.postagemService.getByTituloPostagem(this.tituloPost).subscribe((resp: Postagem[])=>{
+        this.listaPostagens = resp
+      })
+    }
 
   }
 
-  getAllPostagem(){
-    this.postagemService.getAllPostagens().subscribe((resp: Postagem[]) =>{
-      this.listaPostagem = resp
+  publicar() {
+    this.tema.id = this.idTema
+    this.postagem.tema = this.tema
+    this.user.id = environment.idUser
+    this.postagem.usuario = this.user
+    this.postagemService.postPostagem(this.postagem).subscribe((resp: Postagem) => {
+      this.postagem = resp
+      this.alertas.showAlertSuccess('Postagem realizada com sucesso!')
+      this.findAllPostagens()
+      this.findByIdUser()
+      this.findAllTemas()
+      this.postagem = new Postagem()
     })
   }
 
+  
 
-
-  getByIdUser(){
-    this.auth.getByIdUser(this.idUser).subscribe((resp: User) =>{
-      this.user = resp
-
-    })
-  }
-
+ 
 
 }
